@@ -13153,12 +13153,13 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Imports here</span>
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">PIL</span>
+<span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
@@ -13187,7 +13188,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">data_dir</span> <span class="o">=</span> <span class="s1">&#39;flowers&#39;</span>
@@ -13203,7 +13204,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Define your transforms for the training, validation, and testing sets</span>
@@ -13213,61 +13214,29 @@ div#notebook {
                                        <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
                                        <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">([</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">],</span> 
                                                             <span class="p">[</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">])])</span>
-
-
 <span class="n">valid_transforms</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span><span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="mi">256</span><span class="p">),</span>
-                                    <span class="n">transforms</span><span class="o">.</span><span class="n">CenterCrop</span><span class="p">(</span><span class="mi">224</span><span class="p">),</span>
-                                    <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
-                                    <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">([</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">],</span>
-                                                        <span class="p">[</span><span class="mf">0.299</span><span class="p">,</span><span class="mf">0.224</span><span class="p">,</span><span class="mf">0.225</span><span class="p">])])</span>
-
-
-<span class="n">test_tranforms</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span><span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="mi">256</span><span class="p">),</span>
-                                    <span class="n">transforms</span><span class="o">.</span><span class="n">CenterCrop</span><span class="p">(</span><span class="mi">224</span><span class="p">),</span>
-                                    <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
-                                    <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">([</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">],</span>
-                                                        <span class="p">[</span><span class="mf">0.299</span><span class="p">,</span><span class="mf">0.224</span><span class="p">,</span><span class="mf">0.225</span><span class="p">])])</span>
+                                      <span class="n">transforms</span><span class="o">.</span><span class="n">CenterCrop</span><span class="p">(</span><span class="mi">224</span><span class="p">),</span>
+                                      <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+                                      <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">([</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">],</span> 
+                                                           <span class="p">[</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">])])</span>
+<span class="n">test_transforms</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span><span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="mi">256</span><span class="p">),</span>
+                                      <span class="n">transforms</span><span class="o">.</span><span class="n">CenterCrop</span><span class="p">(</span><span class="mi">224</span><span class="p">),</span>
+                                      <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+                                      <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">([</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">],</span> 
+                                                           <span class="p">[</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">])])</span>
 
 <span class="c1"># TODO: Load the datasets with ImageFolder</span>
-<span class="n">train_datasets</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">ImageFolder</span><span class="p">(</span><span class="n">train_dir</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">train_transforms</span><span class="p">)</span>
-<span class="n">valid_datasets</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">ImageFolder</span><span class="p">(</span><span class="n">valid_dir</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">valid_transforms</span><span class="p">)</span>
-<span class="n">test_datasets</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">ImageFolder</span><span class="p">(</span><span class="n">test_dir</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">test_transforms</span><span class="p">)</span>
-
+<span class="n">train_data</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">ImageFolder</span><span class="p">(</span><span class="n">train_dir</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">train_transforms</span><span class="p">)</span>
+<span class="n">valid_data</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">ImageFolder</span><span class="p">(</span><span class="n">valid_dir</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">valid_transforms</span><span class="p">)</span>
+<span class="n">test_data</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">ImageFolder</span><span class="p">(</span><span class="n">test_dir</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">test_transforms</span><span class="p">)</span>
 
 <span class="c1"># TODO: Using the image datasets and the trainforms, define the dataloaders</span>
-<span class="n">trainloader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">train_datasets</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">validloader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">valid_datasets</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
-<span class="n">testloader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">test_datasets</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">trainloader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">train_data</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">validloader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">valid_data</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">)</span>
+<span class="n">testloader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">test_data</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-31-90cae133708d&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-intense-fg ansi-bold">     24</span> train_datasets <span class="ansi-blue-fg">=</span> datasets<span class="ansi-blue-fg">.</span>ImageFolder<span class="ansi-blue-fg">(</span>train_dir<span class="ansi-blue-fg">,</span> transform<span class="ansi-blue-fg">=</span>train_transforms<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     25</span> valid_datasets <span class="ansi-blue-fg">=</span> datasets<span class="ansi-blue-fg">.</span>ImageFolder<span class="ansi-blue-fg">(</span>valid_dir<span class="ansi-blue-fg">,</span> transform<span class="ansi-blue-fg">=</span>valid_transforms<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">---&gt; 26</span><span class="ansi-red-fg"> </span>test_datasets <span class="ansi-blue-fg">=</span> datasets<span class="ansi-blue-fg">.</span>ImageFolder<span class="ansi-blue-fg">(</span>test_dir<span class="ansi-blue-fg">,</span> transform<span class="ansi-blue-fg">=</span>test_transforms<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     27</span> 
-<span class="ansi-green-intense-fg ansi-bold">     28</span> 
-
-<span class="ansi-red-fg">NameError</span>: name &#39;test_transforms&#39; is not defined</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -13282,12 +13251,10 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
-
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;cat_to_name.json&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;cat_to_name.json&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">cat_to_name</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 </pre></div>
 
@@ -13318,12 +13285,16 @@ GPU Workspaces about Keeping Your Session Active. You'll want to include code fr
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[33]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Build and train your network</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">resnet34</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">model</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;resnet34&quot;</span>
+
+<span class="c1"># model = models.resnet34(pretrained=True)</span>
+<span class="c1"># model.name = &quot;resnet34&quot;</span>
+<span class="c1"># model</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">vgg19_bn</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">model</span>
 </pre></div>
 
@@ -13337,156 +13308,125 @@ GPU Workspaces about Keeping Your Session Active. You'll want to include code fr
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[33]:</div>
+    <div class="prompt output_prompt">Out[5]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>ResNet(
-  (conv1): Conv2d(3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
-  (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-  (relu): ReLU(inplace)
-  (maxpool): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
-  (layer1): Sequential(
-    (0): BasicBlock(
-      (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace)
-      (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-    )
-    (1): BasicBlock(
-      (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace)
-      (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-    )
-    (2): BasicBlock(
-      (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace)
-      (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-    )
+<pre>VGG(
+  (features): Sequential(
+    (0): Conv2d(3, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU(inplace)
+    (3): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (4): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): ReLU(inplace)
+    (6): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (7): Conv2d(64, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (8): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (9): ReLU(inplace)
+    (10): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (11): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (12): ReLU(inplace)
+    (13): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (14): Conv2d(128, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (15): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (16): ReLU(inplace)
+    (17): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (18): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (19): ReLU(inplace)
+    (20): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (21): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (22): ReLU(inplace)
+    (23): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (24): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (25): ReLU(inplace)
+    (26): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (27): Conv2d(256, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (28): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (29): ReLU(inplace)
+    (30): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (31): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (32): ReLU(inplace)
+    (33): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (34): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (35): ReLU(inplace)
+    (36): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (37): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (38): ReLU(inplace)
+    (39): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (40): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (41): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (42): ReLU(inplace)
+    (43): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (44): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (45): ReLU(inplace)
+    (46): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (47): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (48): ReLU(inplace)
+    (49): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (50): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (51): ReLU(inplace)
+    (52): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
   )
-  (layer2): Sequential(
-    (0): BasicBlock(
-      (conv1): Conv2d(64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
-      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace)
-      (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (downsample): Sequential(
-        (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(2, 2), bias=False)
-        (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      )
-    )
-    (1): BasicBlock(
-      (conv1): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace)
-      (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-    )
-    (2): BasicBlock(
-      (conv1): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace)
-      (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-    )
-    (3): BasicBlock(
-      (conv1): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace)
-      (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-    )
+  (classifier): Sequential(
+    (0): Linear(in_features=25088, out_features=4096, bias=True)
+    (1): ReLU(inplace)
+    (2): Dropout(p=0.5)
+    (3): Linear(in_features=4096, out_features=4096, bias=True)
+    (4): ReLU(inplace)
+    (5): Dropout(p=0.5)
+    (6): Linear(in_features=4096, out_features=1000, bias=True)
   )
-  (layer3): Sequential(
-    (0): BasicBlock(
-      (conv1): Conv2d(128, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
-      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace)
-      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (downsample): Sequential(
-        (0): Conv2d(128, 256, kernel_size=(1, 1), stride=(2, 2), bias=False)
-        (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      )
-    )
-    (1): BasicBlock(
-      (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace)
-      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-    )
-    (2): BasicBlock(
-      (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace)
-      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-    )
-    (3): BasicBlock(
-      (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace)
-      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-    )
-    (4): BasicBlock(
-      (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace)
-      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-    )
-    (5): BasicBlock(
-      (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace)
-      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-    )
-  )
-  (layer4): Sequential(
-    (0): BasicBlock(
-      (conv1): Conv2d(256, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
-      (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace)
-      (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (downsample): Sequential(
-        (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)
-        (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      )
-    )
-    (1): BasicBlock(
-      (conv1): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace)
-      (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-    )
-    (2): BasicBlock(
-      (conv1): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (relu): ReLU(inplace)
-      (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-    )
-  )
-  (avgpool): AvgPool2d(kernel_size=7, stride=1, padding=0)
-  (fc): Linear(in_features=512, out_features=1000, bias=True)
 )</pre>
 </div>
 
 </div>
 
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># features = list(model.classifier.children())[:-1]</span>
+
+<span class="c1"># number of filters in the bottleneck layer</span>
+<span class="c1"># num_filters = model.classifier[len(features)].in_features</span>
+
+<span class="c1"># add layers</span>
+<span class="c1"># features.extend([</span>
+<span class="c1">#     nn.Dropout(),</span>
+<span class="c1">#     nn.Linear(num_filters, hidden_units),</span>
+<span class="c1">#     nn.ReLU(True),</span>
+<span class="c1">#     nn.Dropout(),</span>
+<span class="c1">#     nn.Linear(hidden_units, hidden_units),</span>
+<span class="c1">#     nn.ReLU(True),</span>
+<span class="c1">#    nn.Linear(hidden_units, num_labels),</span>
+<span class="c1"># ])</span>
+<span class="c1"># model.classifier = nn.Sequential(*features)</span>
+
+
+
+<span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
+    <span class="n">param</span><span class="o">.</span><span class="n">requires_grad</span> <span class="o">=</span> <span class="kc">False</span>
+    
+<span class="n">classifier</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">25088</span><span class="p">,</span> <span class="mi">4096</span><span class="p">),</span>
+                           <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+                           <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span>
+                           <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">4096</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span>
+                           <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+                           <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span>
+                           <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">102</span><span class="p">),</span>
+                           <span class="n">nn</span><span class="o">.</span><span class="n">LogSoftmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">classifier</span> <span class="o">=</span> <span class="n">classifier</span>
+</pre></div>
+
+    </div>
 </div>
 </div>
 
@@ -13501,7 +13441,7 @@ GPU Workspaces about Keeping Your Session Active. You'll want to include code fr
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Use GPU if available</span>
@@ -13535,24 +13475,107 @@ GPU Workspaces about Keeping Your Session Active. You'll want to include code fr
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[35]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Do validation on the test set</span>
 
-<span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">train_datasets</span><span class="p">:</span>
-        <span class="n">images</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">data</span>
-        <span class="n">images</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">images</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
-        <span class="n">outputs</span> <span class="o">=</span> <span class="n">models</span><span class="p">(</span><span class="n">images</span><span class="p">)</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">predicted</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">outputs</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">total</span> <span class="o">+=</span> <span class="n">labels</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">correct</span> <span class="o">+=</span> <span class="p">(</span><span class="n">predicted</span> <span class="o">==</span> <span class="n">labels</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<span class="c1"># correct = 0</span>
+<span class="c1"># total = 0</span>
+<span class="c1"># with torch.no_grad():</span>
+<span class="c1">#     model.eval()</span>
+<span class="c1">#     for data in train_datasets:</span>
+<span class="c1">#         images, labels = data</span>
+<span class="c1">#         images, labels = images.to(device), labels.to(device)</span>
+<span class="c1">#         outputs = models(images)</span>
+<span class="c1">#         _, predicted = torch.max(outputs.data, 1)</span>
+<span class="c1">#         total += labels.size(0)</span>
+<span class="c1">#         correct += (predicted == labels).sum().item()</span>
         
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The accuracy of the neural network on tested images is: </span><span class="si">%d%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">correct</span> <span class="o">/</span> <span class="n">total</span><span class="p">))</span>
+<span class="c1"># print(&quot;The accuracy of the neural network on tested images is: %d%%&quot; % (100 * correct / total))</span>
+
+
+<span class="k">def</span> <span class="nf">validation</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">validloader</span><span class="p">,</span> <span class="n">criterion</span><span class="p">):</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;cuda&#39;</span><span class="p">)</span>
+    <span class="n">valid_loss</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">accuracy</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">validloader</span><span class="p">:</span>
+        <span class="n">images</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="n">images</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">images</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;cuda&#39;</span><span class="p">),</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;cuda&#39;</span><span class="p">)</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">images</span><span class="p">)</span>
+        <span class="n">valid_loss</span> <span class="o">+=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        
+        <span class="n">ps</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+        <span class="n">equality</span> <span class="o">=</span> <span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">data</span> <span class="o">==</span> <span class="n">ps</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">accuracy</span> <span class="o">+=</span> <span class="n">equality</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    
+    <span class="k">return</span> <span class="n">valid_loss</span><span class="p">,</span> <span class="n">accuracy</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">NLLLoss</span><span class="p">()</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">classifier</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">epochs</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">print_every</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="n">steps</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;cuda&#39;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+    <span class="n">running_loss</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">trainloader</span><span class="p">):</span>
+        <span class="n">steps</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;cuda&#39;</span><span class="p">),</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;cuda&#39;</span><span class="p">)</span>
+        
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        
+        <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+        
+        <span class="n">running_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        
+        <span class="k">if</span> <span class="n">steps</span> <span class="o">%</span> <span class="n">print_every</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            
+            <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+            
+            <span class="c1"># Turn off gradients for validation, saves memory and computations</span>
+            <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+                <span class="n">valid_loss</span><span class="p">,</span> <span class="n">accuracy</span> <span class="o">=</span> <span class="n">validation</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">validloader</span><span class="p">,</span> <span class="n">criterion</span><span class="p">)</span>
+                
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Epoch: </span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2">.. &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">epochs</span><span class="p">),</span>
+                  <span class="s2">&quot;Training Loss: </span><span class="si">{:.3f}</span><span class="s2">.. &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">running_loss</span><span class="o">/</span><span class="n">print_every</span><span class="p">),</span>
+                  <span class="s2">&quot;Valid Loss: </span><span class="si">{:.3f}</span><span class="s2">.. &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">valid_loss</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">validloader</span><span class="p">)),</span>
+                  <span class="s2">&quot;Valid Accuracy: </span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">accuracy</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">validloader</span><span class="p">)))</span>
+            
+            <span class="n">running_loss</span> <span class="o">=</span> <span class="mi">0</span>
+            
+            <span class="c1"># Make sure training is back on</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -13568,21 +13591,44 @@ GPU Workspaces about Keeping Your Session Active. You'll want to include code fr
     <div class="prompt"></div>
 
 
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">AttributeError</span>                            Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-35-4d9af268b7f7&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-intense-fg ansi-bold">      7</span>     <span class="ansi-green-fg">for</span> data <span class="ansi-green-fg">in</span> train_datasets<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">      8</span>         images<span class="ansi-blue-fg">,</span> labels <span class="ansi-blue-fg">=</span> data
-<span class="ansi-green-fg">----&gt; 9</span><span class="ansi-red-fg">         </span>images<span class="ansi-blue-fg">,</span> labels <span class="ansi-blue-fg">=</span> images<span class="ansi-blue-fg">.</span>to<span class="ansi-blue-fg">(</span>device<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> labels<span class="ansi-blue-fg">.</span>to<span class="ansi-blue-fg">(</span>device<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     10</span>         outputs <span class="ansi-blue-fg">=</span> models<span class="ansi-blue-fg">(</span>images<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     11</span>         _<span class="ansi-blue-fg">,</span> predicted <span class="ansi-blue-fg">=</span> torch<span class="ansi-blue-fg">.</span>max<span class="ansi-blue-fg">(</span>outputs<span class="ansi-blue-fg">.</span>data<span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">)</span>
-
-<span class="ansi-red-fg">AttributeError</span>: &#39;int&#39; object has no attribute &#39;to&#39;</pre>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Epoch: 1/5..  Training Loss: 4.550..  Valid Loss: 3.946..  Valid Accuracy: 0.167
+Epoch: 1/5..  Training Loss: 3.798..  Valid Loss: 2.753..  Valid Accuracy: 0.403
+Epoch: 1/5..  Training Loss: 2.942..  Valid Loss: 1.823..  Valid Accuracy: 0.538
+Epoch: 2/5..  Training Loss: 1.864..  Valid Loss: 1.450..  Valid Accuracy: 0.581
+Epoch: 2/5..  Training Loss: 2.146..  Valid Loss: 1.145..  Valid Accuracy: 0.680
+Epoch: 2/5..  Training Loss: 1.905..  Valid Loss: 0.995..  Valid Accuracy: 0.709
+Epoch: 3/5..  Training Loss: 0.943..  Valid Loss: 0.805..  Valid Accuracy: 0.779
+Epoch: 3/5..  Training Loss: 1.655..  Valid Loss: 0.820..  Valid Accuracy: 0.764
+Epoch: 3/5..  Training Loss: 1.590..  Valid Loss: 0.718..  Valid Accuracy: 0.799
+Epoch: 4/5..  Training Loss: 0.507..  Valid Loss: 0.680..  Valid Accuracy: 0.807
+Epoch: 4/5..  Training Loss: 1.483..  Valid Loss: 0.664..  Valid Accuracy: 0.818
+Epoch: 4/5..  Training Loss: 1.427..  Valid Loss: 0.588..  Valid Accuracy: 0.832
+Epoch: 5/5..  Training Loss: 0.172..  Valid Loss: 0.594..  Valid Accuracy: 0.835
+Epoch: 5/5..  Training Loss: 1.364..  Valid Loss: 0.566..  Valid Accuracy: 0.843
+</pre>
 </div>
 </div>
 
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Do validation on the test set</span>
+<span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+    
+<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">accuracy</span> <span class="o">=</span> <span class="n">validation</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">testloader</span><span class="p">,</span> <span class="n">criterion</span><span class="p">)</span>
+                
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Test Accuracy: </span><span class="si">{:.2f}</span><span class="s2">%&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">accuracy</span><span class="o">*</span><span class="mi">100</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">testloader</span><span class="p">)))</span>
+</pre></div>
+
+    </div>
 </div>
 </div>
 
@@ -13599,11 +13645,21 @@ GPU Workspaces about Keeping Your Session Active. You'll want to include code fr
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[36]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Save the checkpoint </span>
-<span class="n">model</span><span class="o">.</span><span class="n">class_to_idx</span> <span class="o">=</span> <span class="n">train_datasets</span><span class="o">.</span><span class="n">class_to_idx</span>
+<span class="c1"># model.class_to_idx = train_datasets.class_to_idx</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">class_to_idx</span> <span class="o">=</span> <span class="n">train_data</span><span class="o">.</span><span class="n">class_to_idx</span>
+
+<span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">({</span>
+            <span class="s1">&#39;class_to_idx&#39;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">class_to_idx</span><span class="p">,</span>
+            <span class="s1">&#39;arch&#39;</span><span class="p">:</span> <span class="s1">&#39;vgg19_bn&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;state_dict&#39;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span>
+            <span class="s1">&#39;hidden_layer&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4096</span><span class="p">,</span> <span class="mi">1000</span><span class="p">],</span>
+            <span class="s1">&#39;optim_state&#39;</span><span class="p">:</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()</span>
+        <span class="p">},</span> <span class="s1">&#39;./&#39;</span> <span class="o">+</span> <span class="s1">&#39;checkpoint.pth&#39;</span> <span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13621,29 +13677,53 @@ GPU Workspaces about Keeping Your Session Active. You'll want to include code fr
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[37]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Write a function that loads a checkpoint and rebuilds the model</span>
 
-<span class="k">def</span> <span class="nf">load_checkpoint</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    This function will load the deep model checkpoint</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="c1"># def load_checkpoint():</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     This function will load the deep model checkpoint</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
     
     <span class="c1"># Get pretrained model</span>
-    <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">vgg16</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+<span class="c1">#    model = models.vgg16(pretrained=True);</span>
     
     <span class="c1"># Free params to prevent backprop through them</span>
-    <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span> <span class="n">param</span><span class="o">.</span><span class="n">requires_grad</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="c1">#    for param in model.parameters(): param.requires_grad = False</span>
     
     <span class="c1"># Load stuff from checkpoint</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">class_to_idx</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;class_to_idx&#39;</span><span class="p">]</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">classifier</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;classifier&#39;</span><span class="p">]</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;state_dict&#39;</span><span class="p">])</span>
+<span class="c1">#    model.class_to_idx = checkpoint[&#39;class_to_idx&#39;]</span>
+<span class="c1">#    model.classifier = checkpoint[&#39;classifier&#39;]</span>
+<span class="c1">#    model.load_state_dict(checkpoint[&#39;state_dict&#39;])</span>
 
     
-    <span class="k">return</span> <span class="n">model</span>
+<span class="c1">#    return model</span>
+
+
+<span class="k">def</span> <span class="nf">load_checkpoint</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
+    <span class="n">checkpoint</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="k">lambda</span> <span class="n">storage</span><span class="p">,</span> <span class="n">loc</span><span class="p">:</span> <span class="n">storage</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;arch&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;vgg19_bn&#39;</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">vgg19_bn</span><span class="p">()</span>
+    <span class="n">classifier</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">25088</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;hidden_layer&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span>
+                           <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+                           <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span>
+                           <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;hidden_layer&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;hidden_layer&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span>
+                           <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+                           <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span>
+                           <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;hidden_layer&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="mi">102</span><span class="p">),</span>
+                           <span class="n">nn</span><span class="o">.</span><span class="n">LogSoftmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">classifier</span> <span class="o">=</span> <span class="n">classifier</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;state_dict&#39;</span><span class="p">])</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">class_to_idx</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;class_to_idx&#39;</span><span class="p">]</span>
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">classifier</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;optim_state&#39;</span><span class="p">])</span>
+    
+    <span class="k">return</span> <span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span>
+
+<span class="c1"># load model</span>
+<span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span> <span class="o">=</span> <span class="n">load_checkpoint</span><span class="p">(</span><span class="s1">&#39;checkpoint.pth&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13673,7 +13753,7 @@ GPU Workspaces about Keeping Your Session Active. You'll want to include code fr
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[38]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">process_image</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
@@ -13682,34 +13762,19 @@ GPU Workspaces about Keeping Your Session Active. You'll want to include code fr
 <span class="sd">    &#39;&#39;&#39;</span>
     
     <span class="c1"># TODO: Process a PIL image for use in a PyTorch model</span>
-    <span class="n">test_image</span> <span class="o">=</span> <span class="n">PIL</span><span class="o">.</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">256</span>
+    <span class="n">im</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+    <span class="n">box</span> <span class="o">=</span> <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">240</span><span class="p">,</span> <span class="mi">240</span><span class="p">)</span>
+    <span class="n">im</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">crop</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
 
-    <span class="c1"># Get original dimensions</span>
-    <span class="n">orig_width</span><span class="p">,</span> <span class="n">orig_height</span> <span class="o">=</span> <span class="n">test_image</span><span class="o">.</span><span class="n">size</span>
-
-    <span class="c1"># Find shorter size and create settings to crop shortest side to 256</span>
-    <span class="k">if</span> <span class="n">orig_width</span> <span class="o">&lt;</span> <span class="n">orig_height</span><span class="p">:</span> <span class="n">resize_size</span><span class="o">=</span><span class="p">[</span><span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="o">**</span><span class="mi">600</span><span class="p">]</span>
-    <span class="k">else</span><span class="p">:</span> <span class="n">resize_size</span><span class="o">=</span><span class="p">[</span><span class="mi">256</span><span class="o">**</span><span class="mi">600</span><span class="p">,</span> <span class="mi">256</span><span class="p">]</span>
-        
-    <span class="n">test_image</span><span class="o">.</span><span class="n">thumbnail</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">resize_size</span><span class="p">)</span>
-
-    <span class="c1"># Find pixels to crop on to create 224x224 image</span>
-    <span class="n">center</span> <span class="o">=</span> <span class="n">orig_width</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="n">orig_height</span><span class="o">/</span><span class="mi">4</span>
-    <span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">bottom</span> <span class="o">=</span> <span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="mi">244</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="mi">244</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="p">(</span><span class="mi">244</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="p">(</span><span class="mi">244</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
-    <span class="n">test_image</span> <span class="o">=</span> <span class="n">test_image</span><span class="o">.</span><span class="n">crop</span><span class="p">((</span><span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">bottom</span><span class="p">))</span>
-
-    <span class="c1"># Converrt to numpy - 244x244 image w/ 3 channels (RGB)</span>
-    <span class="n">np_image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">test_image</span><span class="p">)</span><span class="o">/</span><span class="mi">255</span> 
-
-    <span class="c1"># Normalize each color channel</span>
-    <span class="n">normalise_means</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">]</span>
-    <span class="n">normalise_std</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">]</span>
-    <span class="n">np_image</span> <span class="o">=</span> <span class="p">(</span><span class="n">np_image</span><span class="o">-</span><span class="n">normalise_means</span><span class="p">)</span><span class="o">/</span><span class="n">normalise_std</span>
-        
-    <span class="c1"># Set the color to the first channel</span>
-    <span class="n">np_image</span> <span class="o">=</span> <span class="n">np_image</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-    
-    <span class="k">return</span> <span class="n">np_image</span>
+    <span class="n">np_im</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+    <span class="n">np_im</span> <span class="o">=</span> <span class="n">np_im</span> <span class="o">/</span> <span class="mi">255</span>
+    <span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">])</span>
+    <span class="n">std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">])</span>
+    <span class="n">np_im</span> <span class="o">=</span> <span class="p">(</span><span class="n">np_im</span> <span class="o">-</span> <span class="n">mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">std</span>
+    <span class="n">np_im</span> <span class="o">=</span> <span class="n">np_im</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">np_im</span>
 </pre></div>
 
     </div>
@@ -13727,7 +13792,7 @@ GPU Workspaces about Keeping Your Session Active. You'll want to include code fr
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[39]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -13737,7 +13802,7 @@ GPU Workspaces about Keeping Your Session Active. You'll want to include code fr
     
     <span class="c1"># PyTorch tensors assume the color channel is the first dimension</span>
     <span class="c1"># but matplotlib assumes is the third dimension</span>
-    <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
     
     <span class="c1"># Undo preprocessing</span>
     <span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">])</span>
@@ -13775,7 +13840,7 @@ GPU Workspaces about Keeping Your Session Active. You'll want to include code fr
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[40]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="n">image_path</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">topk</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
@@ -13783,36 +13848,23 @@ GPU Workspaces about Keeping Your Session Active. You'll want to include code fr
 <span class="sd">    &#39;&#39;&#39;</span>
     
     <span class="c1"># TODO: Implement the code to predict the class from an image file</span>
-    
-    <span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
-    
-    <span class="c1"># Set model to evaluate</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">();</span>
+    <span class="n">np_img</span> <span class="o">=</span> <span class="n">process_image</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">)</span>
+    <span class="n">img</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">np_img</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;cuda&#39;</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;cuda&#39;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 
-    <span class="c1"># Convert image from numpy to torch</span>
-    <span class="n">torch_image</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">process_image</span><span class="p">(</span><span class="n">image_path</span><span class="p">),</span> 
-                                                  <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Find probabilities (of results) by passing through the function</span>
-    <span class="n">log_probs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">torch_image</span><span class="p">)</span>
-
-    <span class="c1"># Convert to linear scale</span>
-    <span class="n">linear_probs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_probs</span><span class="p">)</span>
-
-    <span class="c1"># Find the top 5 results</span>
-    <span class="n">top_probs</span><span class="p">,</span> <span class="n">top_labels</span> <span class="o">=</span> <span class="n">linear_probs</span><span class="o">.</span><span class="n">topk</span><span class="p">(</span><span class="n">top_k</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;cpu&#39;</span><span class="p">)</span>
+    <span class="n">ps</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">output</span><span class="p">)</span><span class="o">.</span><span class="n">topk</span><span class="p">(</span><span class="n">topk</span><span class="p">)</span>
+    <span class="n">p</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">ps</span>
+    <span class="n">idx_to_class</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">class_to_idx</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">model</span><span class="o">.</span><span class="n">class_to_idx</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="n">idx_to_class</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">()]</span>
     
-    <span class="c1"># Detatch all of the details</span>
-    <span class="n">top_probs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">top_probs</span><span class="o">.</span><span class="n">detach</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">top_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">top_labels</span><span class="o">.</span><span class="n">detach</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
     
-    <span class="c1"># Convert to classes</span>
-    <span class="n">idx_to_class</span> <span class="o">=</span> <span class="p">{</span><span class="n">val</span><span class="p">:</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span>    
-                                      <span class="n">model</span><span class="o">.</span><span class="n">class_to_idx</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
-    <span class="n">top_labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">idx_to_class</span><span class="p">[</span><span class="n">lab</span><span class="p">]</span> <span class="k">for</span> <span class="n">lab</span> <span class="ow">in</span> <span class="n">top_labels</span><span class="p">]</span>
-    <span class="n">top_flowers</span> <span class="o">=</span> <span class="p">[</span><span class="n">cat_to_name</span><span class="p">[</span><span class="n">lab</span><span class="p">]</span> <span class="k">for</span> <span class="n">lab</span> <span class="ow">in</span> <span class="n">top_labels</span><span class="p">]</span>
-    
-    <span class="k">return</span> <span class="n">top_probs</span><span class="p">,</span> <span class="n">top_labels</span><span class="p">,</span> <span class="n">top_flowers</span>
+    <span class="k">return</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">c</span>
 </pre></div>
 
     </div>
@@ -13832,12 +13884,12 @@ GPU Workspaces about Keeping Your Session Active. You'll want to include code fr
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[42]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># TODO: Display an image along with the top 5 classes</span>
-
-<span class="n">image_path</span> <span class="o">=</span> <span class="s2">&quot;flowers/test/image_007.jpg&quot;</span>
+<span class="c1"># Define image path</span>
+<span class="n">image_path</span> <span class="o">=</span> <span class="s2">&quot;flowers/test/10/image_07090.jpg&quot;</span>
 
 <span class="c1"># Set up plot</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
@@ -13858,53 +13910,29 @@ GPU Workspaces about Keeping Your Session Active. You'll want to include code fr
 <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">probs</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">flowers</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()[</span><span class="mi">0</span><span class="p">]);</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># TODO: Display an image along with the top 5 classes</span>
+
+<span class="c1"># probs, classes = predict(&#39;flowers/test/10/image_07090.jpg&#39;, model, topk=5)</span>
+
+<span class="c1"># names = np.array([cat_to_name[i] for i in classes])</span>
+
+<span class="c1"># fig = plt.figure(figsize=(5, 10))</span>
+<span class="c1"># ax1 = fig.add_subplot(2, 1, 1)</span>
+<span class="c1"># ax1.set_xticks([])</span>
+<span class="c1"># ax1.set_yticks([])</span>
+<span class="c1"># ax1.set_title(&#39;Rose&#39;)</span>
+<span class="c1"># np_img = process_image(&#39;image_07090.jpg&#39;)</span>
+<span class="c1"># imshow(np_img, ax1)</span>
+
+<span class="c1"># ax2 = fig.add_subplot(2, 1, 2)</span>
+<span class="c1"># ax2 = plt.yticks(range(5), names[::-1])</span>
+<span class="c1"># ax2 = plt.barh(range(5), probs[::-1])</span>
+
+<span class="c1"># plt.show()</span>
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">IndexError</span>                                Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-42-2f65a607c47a&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-intense-fg ansi-bold">      9</span> 
-<span class="ansi-green-intense-fg ansi-bold">     10</span> <span class="ansi-red-fg"># Set up title</span>
-<span class="ansi-green-fg">---&gt; 11</span><span class="ansi-red-fg"> </span>flower_num <span class="ansi-blue-fg">=</span> image_path<span class="ansi-blue-fg">.</span>split<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;/&#39;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">]</span>
-<span class="ansi-green-intense-fg ansi-bold">     12</span> title_ <span class="ansi-blue-fg">=</span> cat_to_name<span class="ansi-blue-fg">[</span>flower_num<span class="ansi-blue-fg">]</span>
-<span class="ansi-green-intense-fg ansi-bold">     13</span> 
-
-<span class="ansi-red-fg">IndexError</span>: list index out of range</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
-<img src="data:image/png;base64,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
-"
-width=380
-height=281
->
-</div>
-
-</div>
-
 </div>
 </div>
 
