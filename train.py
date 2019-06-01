@@ -67,9 +67,9 @@ def train_transformer(train_dir):
                                        transforms.ToTensor(),
                                        transforms.Normalize([0.485, 0.456, 0.406], 
                                                             [0.229, 0.224, 0.225])])
-# Load the Data
-image_datasets = datasets.ImageFolder(train_dir, transform=train_transforms)
-        return image_datasets
+    # Load the Data
+    image_datasets = datasets.ImageFolder(train_dir, transform=train_transforms)
+            return image_datasets
 
 # Function test_transformer(test_dir) performs test/validation transformations on a dataset
 def test_transformer(test_dir):
@@ -105,13 +105,13 @@ def check_gpu(gpu_arg):
         print("CUDA was not found on device, using CPU instead.")
     return device
 
-# primaryloader_model(architecture="vgg16") downloads model (primary) from torchvision
-def primaryloader_model(architecture="vgg16"):
+# primaryloader_model(architecture="vgg19_bn") downloads model (primary) from torchvision
+def primaryloader_model(architecture="vgg19_bn"):
     # Load Defaults if none specified
     if type(architecture) == type(None): 
-        model = models.vgg16(pretrained=True)
-        model.name = "vgg16"
-        print("Network architecture specified as vgg16.")
+        model = models.vgg19_bn(pretrained=True)
+        model.name = "vgg19_bn"
+        print("Network architecture specified as vgg19_bn.")
     else: 
         exec("model = models.{}(pretrained=True)".format(architecture))
         model.name = architecture
@@ -136,7 +136,7 @@ def initial_classifier(model, hidden_units):
                           ('fc1', nn.Linear(input_features, hidden_units, bias=True)),
                           ('relu1', nn.ReLU()),
                           ('dropout1', nn.Dropout(p=0.5)),
-                          ('fc2', nn.Linear(hidden_units, 102, bias=True)),
+                          #('fc2', nn.Linear(hidden_units, 102, bias=True)),
                           ('output', nn.LogSoftmax(dim=1))
                           ]))
     return classifier
@@ -181,26 +181,26 @@ def network_trainer(Model, Trainloader, Testloader, Device,
             Optimizer.zero_grad()
             
             # Forward and backward passes
-            outputs = model.forward(inputs)
-            loss = criterion(outputs, labels)
+            outputs = Model.forward(inputs)
+            loss = Criterion(outputs, labels)
             loss.backward()
-            optimizer.step()
+            Optimizer.step()
         
             running_loss += loss.item()
         
-            if steps % print_every == 0:
-                model.eval()
+            if Steps % Print_every == 0:
+                Model.eval()
 
                 with torch.no_grad():
-                    valid_loss, accuracy = validation(model, validloader, criterion)
+                    valid_loss, accuracy = validation(Model, Testloader, Criterion, Device)
             
-                print("Epoch: {}/{} | ".format(e+1, epochs),
-                     "Training Loss: {:.4f} | ".format(running_loss/print_every),
-                     "Validation Loss: {:.4f} | ".format(valid_loss/len(testloader)),
-                     "Validation Accuracy: {:.4f}".format(accuracy/len(testloader)))
+                print("Epoch: {}/{} | ".format(e+1, Epochs),
+                     "Training Loss: {:.4f} | ".format(running_loss/Print_every),
+                     "Validation Loss: {:.4f} | ".format(valid_loss/len(Testloader)),
+                     "Validation Accuracy: {:.4f}".format(accuracy/len(Testloader)))
             
                 running_loss = 0
-                model.train()
+                Model.train()
 
     return Model
 
